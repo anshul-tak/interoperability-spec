@@ -95,7 +95,16 @@
 		var newRequirement = {}
 
 		var addNewFile = function(data){
-			console.log(data)
+			if (data.status == 404 || data.length == 0) {
+				console.log("error");
+			} else {
+				if(data.content){
+					var url = data.content.html_url;
+					window.location.href = url;
+				}else{
+					console.log("Error occured")
+				}
+			}
 		}
 		var getTemplateData = function(data) {
 			if (data.status == 404 || data.length == 0) {
@@ -103,15 +112,14 @@
 			} else {
 				newRequirement["template"] = data.content
 			}		
-		//	var mess = '{"path":"src/main/asciidoc/openminted-interoperability-spec/req/'+newRequirement["newReq"]+'.adoc", "message": "'+newRequirement["newReq"]+'.adoc added","committer": {"name": "anshul-tak","email": "anshul.tak@gmail.com"}, "content": "'+newRequirement["template"]+'"}'
-		var mess = '{"path":"src/main/asciidoc/openminted-interoperability-spec/req/29.adoc", "message": "my commit message","committer": {"name": "anshul-tak","email": "anshul.tak@gmail.com"}, "content": "bXkgbmV3IGZpbGUgY29udGVudHM="}';	
+		var mess = '{"path":"src/main/asciidoc/openminted-interoperability-spec/req/'+newRequirement["newReq"]+'.adoc", "message": "'+newRequirement["newReq"]+'.adoc added","committer": {"name": "anshul-tak","email": "anshul.tak@gmail.com"}, "content": "'+btoa(atob(newRequirement["template"]))+'"}'		
 		$.ajax({
 			    type: 'PUT', 			    
 			    url: 'https://api.github.com/repos/anshul-tak/interoperability-spec/contents/src/main/asciidoc/openminted-interoperability-spec/req/'+newRequirement["newReq"]+'.adoc',	  
 			    data : mess,
 			    beforeSend: function (request)
 	            {
-	                request.setRequestHeader("Authorization", "token b1d1e41a0486c321d9224ebd0320b37ff5502d43");
+	               // request.setRequestHeader("Authorization", "token 5f696991ffd1cc062c24bbc30a561610c0f9d6d1");
 	                
 	            },			    
 				success : addNewFile
